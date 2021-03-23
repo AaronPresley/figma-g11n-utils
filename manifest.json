@@ -1,6 +1,9 @@
 {
-  "name": "Pseudo Translate",
+  "name": "G11N Utilities",
   "id": "937106647604992352",
   "api": "1.0.0",
-  "main": "build/code.js"
+  "main": "build/code.js",
+  "menu": [
+    {"name":"Pseudo Translate", "command": "pseudo-translate"}
+  ]
 }
