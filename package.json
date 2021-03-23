@@ -16,6 +16,6 @@
     "webpack-cli": "^4.4.0"
   },
   "dependencies": {
-    "i18n-pseudo": "^1.0.0"
+    "i18n-pseudo": "^1.1.1"
   }
 }

@@ -1,6 +1,8 @@
-import makePseudo from 'i18n-pseudo';
+import { PseudoFormat } from 'i18n-pseudo';
 import { gatherTextNodes } from './utils';
+
 (async () => {
+  const pseudo = new PseudoFormat();
   const textNodes = gatherTextNodes(figma.currentPage.selection);
   
   if (!textNodes.length) {
@@ -28,7 +30,7 @@ import { gatherTextNodes } from './utils';
     }
 
     const ogText = thisNode.characters;
-    const newText = makePseudo(ogText);
+    const newText = pseudo.format(ogText);
     thisNode.deleteCharacters(0, ogText.length);
     thisNode.insertCharacters(0, newText, 'AFTER');
   }
