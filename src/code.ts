@@ -1,9 +1,14 @@
 import pseudoTranslate from './pseudo-translate/code';
+import settings from './settings/code';
 
 (async () => {
   switch(figma.command) {
     case 'pseudo-translate':
-      pseudoTranslate()
+      await pseudoTranslate()
+      break;
+    
+    case 'settings':
+      await settings();
       break;
     
     default:
