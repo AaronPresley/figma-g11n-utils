@@ -4,8 +4,10 @@
   "description": "A Figma plugin to help simplify your Globalization workflow",
   "main": "code.js",
   "scripts": {
+    "build:prod": "NODE_ENV=production webpack",
+    "build:watch": "yarn build --watch",
     "build": "webpack",
-    "build:prod": "NODE_ENV=production webpack"
+    "start": "yarn build:watch"
   },
   "author": "Aaron Presley",
   "license": "MIT",
