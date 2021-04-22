@@ -1,52 +1,30 @@
-import { BehaviorSubject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-
-export interface FigmaMessage {
-  source: 'code' | 'ui';
-  data: FigmaMessageData,
-}
+import { Observable } from 'rxjs';
 
 export interface FigmaMessageData {
   command: string,
-  [key: string]: any,
+  data?: any,
 }
 
-// Messages going TO code
-export const $codeMessage = new BehaviorSubject<FigmaMessageData>(null);
+// Use this within CODE to listen for UI messages
+export const uiMessageObserver = (): Observable<FigmaMessageData> =>
+  new Observable(subscriber => {
+    figma.ui.onmessage = (data:FigmaMessageData) => subscriber.next(data);
+  });
 
-// Messages going TO ui
-export const $uiMessage = new BehaviorSubject<FigmaMessageData>(null);
+// Use this within UI to listen for CODE messages
+export const codeMessageObserver = (): Observable<FigmaMessageData> =>
+  new Observable(subscriber => {
+    onmessage = (e) => subscriber.next(e.data.pluginMessage);
+  });
 
-// To send a message TO code
+// Use this to send messages TO code
 export const sendMsgToCode = (data:FigmaMessageData) => {
   parent.postMessage({
-    pluginMessage: {
-      source: 'ui',
-      data,
-    }
+    pluginMessage: data
   }, '*');
 };
 
-// To send a message TO ui
+// Use this to send messages TO ui
 export const sendMsgToUI = (data:FigmaMessageData) => {
-  figma.ui.postMessage({
-    source: 'code', data,
-  }, { origin: '*' });
+  figma.ui.postMessage(data, { origin: '*' });
 };
-
-(() => {
-  // Runs when we're within the CODE environment
-  if(typeof figma !== 'undefined') {
-    figma.ui.onmessage = (data:FigmaMessageData) => {
-      $codeMessage.next(data);
-    };
-  }
-  
-  // Runs when we're within the UI environment
-  else {
-    onmessage = (e) => {
-      const data: FigmaMessageData = e.data.pluginMessage;
-      $uiMessage.next(data);
-    }
-  }
-})();

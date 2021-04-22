@@ -1,10 +1,14 @@
-import { filter } from 'rxjs/operators';
-import { $uiMessage, sendMsgToCode } from './utils/messages';
+import { sendMsgToCode, codeMessageObserver} from './utils/messages';
 
-$uiMessage
-  .subscribe(val => console.log('CODE message received', val));
+codeMessageObserver()
+  .subscribe(console.log);
 
 sendMsgToCode({
-  command: 'asdf',
-  asdf: 'asdf',
+  command: 'from-ui-init',
 });
+
+setTimeout(function() {
+  sendMsgToCode({
+    command: 'from-ui-delay',
+  });
+}, 2000);

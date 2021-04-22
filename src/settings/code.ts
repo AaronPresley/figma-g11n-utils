@@ -1,16 +1,18 @@
-import { filter } from 'rxjs/operators';
-import { $codeMessage } from '../utils/messages';
+import { sendMsgToUI, uiMessageObserver } from '../utils/messages';
 
 export default async () => {
   figma.showUI(__html__);
+
+  uiMessageObserver()
+    .subscribe(console.log);
   
-  $codeMessage
-    .subscribe(val => console.log('UI message received', val));
+  sendMsgToUI({
+    command: 'from-code-init',
+  });
 
-  // sendMsgToUI({ command: 'settings', fromCode: true });
-
-  // figma.ui.onmessage = (msg) => {
-  //   console.log('UI msg received in CODE', { msg });
-  //   sendMsgToUI('pong');
-  // }
+  setTimeout(function() {
+    sendMsgToUI({
+      command: 'from-code-delay'
+    })
+  }, 2000);
 }
