@@ -1,24 +1,61 @@
 import { BehaviorSubject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
-export const $codeMessage = new BehaviorSubject<any>(null);
-export const $uiMessage = new BehaviorSubject<any>(null);
+export interface FigmaMessageData {
+  command: string,
+  [key: string]: any,
+}
+export interface FigmaMessage {
+  source: 'code' | 'ui';
+  data: FigmaMessageData,
+}
 
-export const sendMsgToCode = (msg:any) => {
-  parent.postMessage({ pluginMessage: msg }, '*');
+// A generic subject to hold all messages from any source
+export const $figmaMessage = new BehaviorSubject<FigmaMessage>(null);
+
+// Messages going FROM the ui TO the code
+export const $codeMessage = $figmaMessage
+  .pipe(
+    filter(msg => msg?.source === 'ui'),
+    map(msg => msg.data),
+  );
+
+// Message going FROM code TO the ui
+export const $uiMessage = $figmaMessage
+  .pipe(
+    filter(msg => msg?.source === 'code'),
+    map(msg => msg.data),
+  );
+
+
+export const sendMsgToCode = (data:FigmaMessageData) => {
+  parent.postMessage({
+    pluginMessage: {
+      source: 'ui',
+      data,
+    }
+  }, '*');
 };
 
-export const sendMsgToUI = (msg:any) => {
-  figma.ui.postMessage(msg, { origin: '*' });
+export const sendMsgToUI = (data:FigmaMessageData) => {
+  figma.ui.postMessage({
+    source: 'code', data,
+  }, { origin: '*' });
 };
 
 (() => {
+  // Runs when we're in the CODE environment
   if(typeof figma !== 'undefined') {
-    figma.ui.onmessage = (msg) => {
-      $codeMessage.next(msg);
+    figma.ui.onmessage = (data:FigmaMessage) => {
+      $figmaMessage.next(data);
     };
-  } else {
+  }
+  
+  // Runs when we're in the UI environment
+  else {
     onmessage = (e) => {
-      $uiMessage.next(e.data.pluginMessage);
+      const data: FigmaMessage = e.data.pluginMessage;
+      $figmaMessage.next(data);
     }
   }
 })();

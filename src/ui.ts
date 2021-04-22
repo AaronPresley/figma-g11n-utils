@@ -1,12 +1,12 @@
 import { sendMsgToCode, $codeMessage, $uiMessage } from './utils/messages';
 
 $uiMessage
-  .subscribe(val => console.log('within UI', val));
+  .subscribe(val => console.log('CODE message received', val));
 
 // onmessage = (e) => {
 //   console.log(`CODE msg received in UI`, { msg: e.data.pluginMessage });
 // }
-sendMsgToCode('pong');
+sendMsgToCode({ command: 'settings', fromUi: true });
 
 // setTimeout(() => {
 //   console.log("I'm the CHANGED thing");

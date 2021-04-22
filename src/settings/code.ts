@@ -4,9 +4,10 @@ export default async () => {
   figma.showUI(__html__);
   
   $codeMessage
-    .subscribe(val => console.log('within CODE', val));
+    .subscribe(val => console.log('UI message received', val));
 
-  sendMsgToUI('ping');
+  sendMsgToUI({ command: 'settings', fromCode: true });
+
   // figma.ui.onmessage = (msg) => {
   //   console.log('UI msg received in CODE', { msg });
   //   sendMsgToUI('pong');
