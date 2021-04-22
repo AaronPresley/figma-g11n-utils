@@ -35,6 +35,7 @@ module.exports = (env, argv) => ({
       filename: 'ui.html',
       template: path.resolve(__dirname, 'src/ui.html'),
       cache: false,
+      chunks: ['ui'],
     }),
     new HtmlInlineScriptPlugin([
       'ui.js'

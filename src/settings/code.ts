@@ -1,4 +1,5 @@
-import { sendMsgToUI, $codeMessage } from '../utils/messages';
+import { filter } from 'rxjs/operators';
+import { $codeMessage } from '../utils/messages';
 
 export default async () => {
   figma.showUI(__html__);
@@ -6,7 +7,7 @@ export default async () => {
   $codeMessage
     .subscribe(val => console.log('UI message received', val));
 
-  sendMsgToUI({ command: 'settings', fromCode: true });
+  // sendMsgToUI({ command: 'settings', fromCode: true });
 
   // figma.ui.onmessage = (msg) => {
   //   console.log('UI msg received in CODE', { msg });

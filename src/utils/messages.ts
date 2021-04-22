@@ -1,33 +1,23 @@
 import { BehaviorSubject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-export interface FigmaMessageData {
-  command: string,
-  [key: string]: any,
-}
 export interface FigmaMessage {
   source: 'code' | 'ui';
   data: FigmaMessageData,
 }
 
-// A generic subject to hold all messages from any source
-export const $figmaMessage = new BehaviorSubject<FigmaMessage>(null);
+export interface FigmaMessageData {
+  command: string,
+  [key: string]: any,
+}
 
-// Messages going FROM the ui TO the code
-export const $codeMessage = $figmaMessage
-  .pipe(
-    filter(msg => msg?.source === 'ui'),
-    map(msg => msg.data),
-  );
+// Messages going TO code
+export const $codeMessage = new BehaviorSubject<FigmaMessageData>(null);
 
-// Message going FROM code TO the ui
-export const $uiMessage = $figmaMessage
-  .pipe(
-    filter(msg => msg?.source === 'code'),
-    map(msg => msg.data),
-  );
+// Messages going TO ui
+export const $uiMessage = new BehaviorSubject<FigmaMessageData>(null);
 
-
+// To send a message TO code
 export const sendMsgToCode = (data:FigmaMessageData) => {
   parent.postMessage({
     pluginMessage: {
@@ -37,6 +27,7 @@ export const sendMsgToCode = (data:FigmaMessageData) => {
   }, '*');
 };
 
+// To send a message TO ui
 export const sendMsgToUI = (data:FigmaMessageData) => {
   figma.ui.postMessage({
     source: 'code', data,
@@ -44,18 +35,18 @@ export const sendMsgToUI = (data:FigmaMessageData) => {
 };
 
 (() => {
-  // Runs when we're in the CODE environment
+  // Runs when we're within the CODE environment
   if(typeof figma !== 'undefined') {
-    figma.ui.onmessage = (data:FigmaMessage) => {
-      $figmaMessage.next(data);
+    figma.ui.onmessage = (data:FigmaMessageData) => {
+      $codeMessage.next(data);
     };
   }
   
-  // Runs when we're in the UI environment
+  // Runs when we're within the UI environment
   else {
     onmessage = (e) => {
-      const data: FigmaMessage = e.data.pluginMessage;
-      $figmaMessage.next(data);
+      const data: FigmaMessageData = e.data.pluginMessage;
+      $uiMessage.next(data);
     }
   }
 })();
