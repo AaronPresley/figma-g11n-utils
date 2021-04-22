@@ -1,14 +1,22 @@
-import { sendMsgToCode, codeMessageObserver} from './utils/messages';
+import { filter, map } from 'rxjs/operators';
+import { codeMessageObserver } from "./utils/messages";
+import initSettings from './settings/ui';
 
-codeMessageObserver()
-  .subscribe(console.log);
+const $codeMsg = codeMessageObserver();
 
-sendMsgToCode({
-  command: 'from-ui-init',
+document.addEventListener('DOMContentLoaded', () => {
+  $codeMsg
+    // Only listen for the init-ui commands
+    .pipe(filter(msg => msg.command.startsWith('init-ui')))
+    .subscribe(({ command }) => {
+      switch(command) {
+        case 'init-ui-settings':
+          initSettings();
+          break;
+          
+        default:
+          console.warn(`Unknown Command ${command}`);
+          break;
+      }
+    });
 });
-
-setTimeout(function() {
-  sendMsgToCode({
-    command: 'from-ui-delay',
-  });
-}, 2000);
