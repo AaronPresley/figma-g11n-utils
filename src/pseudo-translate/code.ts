@@ -1,5 +1,5 @@
 import { PseudoFormat } from 'i18n-pseudo';
-import { gatherTextNodes } from '../utils';
+import { gatherTextNodes } from '../utils/gather-text-nodes';
 
 export default async () => {
   const pseudo = new PseudoFormat();

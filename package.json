@@ -21,6 +21,7 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
-    "i18n-pseudo": "^1.1.1"
+    "i18n-pseudo": "^1.1.1",
+    "rxjs": "^6.6.7"
   }
 }

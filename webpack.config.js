@@ -34,6 +34,7 @@ module.exports = (env, argv) => ({
     new HtmlWebpackPlugin({
       filename: 'ui.html',
       template: path.resolve(__dirname, 'src/ui.html'),
+      cache: false,
     }),
     new HtmlInlineScriptPlugin([
       'ui.js'
