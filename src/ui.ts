@@ -1,6 +1,6 @@
 import { filter, map } from 'rxjs/operators';
 import { codeMessageObserver } from "./utils/messages";
-import initSettings from './settings/ui';
+import initSettings from './cmd-settings/ui';
 
 const $codeMsg = codeMessageObserver();
 

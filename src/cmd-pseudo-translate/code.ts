@@ -2,7 +2,9 @@ import { PseudoFormat } from 'i18n-pseudo';
 import { gatherTextNodes } from '../utils/gather-text-nodes';
 
 export default async () => {
-  const pseudo = new PseudoFormat();
+  const pseudo = new PseudoFormat({
+    appendChars: '', prependChars: '',
+  });
   const textNodes = gatherTextNodes(figma.currentPage.selection);
   
   if (!textNodes.length) {

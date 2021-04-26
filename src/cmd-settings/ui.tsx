@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './app';
 
 export default () => {
   ReactDOM.render(
-    <p>hi from React!</p>,
+    <App />,
     document.getElementById('root'),
   )
 }
