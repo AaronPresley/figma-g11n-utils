@@ -1,19 +1,23 @@
 import React, { useEffect } from 'react';
+import Wrapper from '../utils-react/components/wrapper';
 import { useMsgFromCode, useMsgToCode } from '../utils-react/hooks';
 
 const App = () => {
-  const codeMsg = useMsgFromCode();
+  const currSettings = useMsgFromCode();
   const sendUiMsg = useMsgToCode();
 
   useEffect(() => {
-    console.log('from ui', codeMsg);
-    if (codeMsg?.command === 'ping') {
-      sendUiMsg({ command: 'pong!' });
-    }
-  }, [codeMsg]);
+    sendUiMsg({ command: 'settings-getSettings' });
+  }, []);
+
+  useEffect(() => {
+    console.log({currSettings});
+  }, [currSettings]);
 
   return (
-    <>I'm the app!</>
+    <Wrapper>
+      Hi I'm the app!
+    </Wrapper>
   );
 }
 

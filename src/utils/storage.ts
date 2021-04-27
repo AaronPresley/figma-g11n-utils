@@ -1,5 +1,5 @@
-export const getValue = async (key:string) =>
-  await figma.clientStorage.getAsync;
+export const getValue = <T = string> (key:string):Promise<T> =>
+  figma.clientStorage.getAsync(key);
 
-export const setValue = async (key:string, value: any) =>
-  await figma.clientStorage.setAsync;
+export const setValue = <T = string> (key:string, value: any) =>
+  figma.clientStorage.setAsync(key, value);

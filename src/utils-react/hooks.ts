@@ -6,13 +6,17 @@ import { codeMessageObserver, FigmaMessageData, sendMsgToCode } from '../utils/m
 /**
  * A hook function that listens for any incoming messages from code
  * and updates a state var with that value
+ * @param fiter 
  */
-export const useMsgFromCode = ():FigmaMessageData => {
+export const useMsgFromCode = (mattersCb:(string) => boolean = null):FigmaMessageData => {
   const [ lastMsg, setLastMsg ] = useState<FigmaMessageData>(null);
   useEffect(() => {
     codeMessageObserver()
       .pipe(filter(msg => msg !== null))
-      .subscribe(msg => setLastMsg(msg));
+      .subscribe(msg => {
+        if (!mattersCb || mattersCb(msg?.command))
+          setLastMsg(msg)
+      });
   }, []);
 
   return lastMsg;
