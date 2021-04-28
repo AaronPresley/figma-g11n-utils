@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import set from 'lodash/set'
 import { useMsgFromCode, useMsgToCode } from '../utils-react/hooks';
 import { StoredSettings } from './code';
+import TextInputField from '../utils-react/components/text-input-field';
+import CheckboxField from '../utils-react/components/checkbox-field';
 
 const App = () => {
   const sendMsgToCode = useMsgToCode();
@@ -23,7 +25,25 @@ const App = () => {
   return (
     <>
       <h1>Pseudo Translation Settings</h1>
-      <label>
+      <TextInputField
+        label="Prepend Characters"
+        helpText="When provided, the characters here will be prepended to the translated text layer."
+        value=""
+        onChange={() => {}}
+      />
+      <TextInputField
+        label="Append Characters"
+        helpText="When provided, the characters here will be appended to the translated text layer."
+        value=""
+        onChange={() => {}}
+      />
+      <CheckboxField
+        label="Expand Text"
+        helpText="When enabled, this will expand the length of the given text layer based on its length."
+        checked
+        onChange={() => {}}
+      />
+      {/* <label>
         <input
           type="checkbox"
           disabled={!settingsMsg}
@@ -33,7 +53,7 @@ const App = () => {
           }}
         />
         Do Expand
-      </label>
+      </label> */}
     </>
   );
 }

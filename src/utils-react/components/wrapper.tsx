@@ -1,4 +1,7 @@
 import React, { FunctionComponent, useEffect, useLayoutEffect } from "react";
+import styled from '@emotion/styled';
+import { Global } from '@emotion/react';
+import styles from '../styles';
 import { codeMessageObserver } from "../../utils/messages";
 import { useMsgFromCode } from "../hooks";
 import { useCodeMessageStore } from "../state";
@@ -22,14 +25,15 @@ const Wrapper:FunctionComponent<{}> = ({ children }) => {
   }, []);
 
   return (
-    <div id="wrapper">
+    <>
+      <Global styles={styles} />
       { !!uiErrors && (
         <div style={{color: 'red'}}>
           { uiErrors.data || 'Sorry, something bad happened' }
         </div>
       )}
       { children }
-    </div>
+    </>
   )
 };
 
