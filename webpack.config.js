@@ -22,6 +22,18 @@ module.exports = (env, argv) => ({
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.s?css$/i,
+        use: [
+          "css-loader",
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+            }
+          }
+        ]
       }
     ]
   },
