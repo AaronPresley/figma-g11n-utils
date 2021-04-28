@@ -1,25 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { codeMessageObserver, FigmaMessageData, sendMsgToCode } from '../utils/messages';
+import { FigmaMessageData, sendMsgToCode } from '../utils/messages';
+import { useCodeMessageStore } from './state';
 
 /**
  * A hook function that listens for any incoming messages from code
  * and updates a state var with that value
  * @param fiter 
  */
-export const useMsgFromCode = (mattersCb:(string) => boolean = null):FigmaMessageData => {
-  const [ lastMsg, setLastMsg ] = useState<FigmaMessageData>(null);
-  useEffect(() => {
-    codeMessageObserver()
-      .pipe(filter(msg => msg !== null))
-      .subscribe(msg => {
-        if (!mattersCb || mattersCb(msg?.command))
-          setLastMsg(msg)
-      });
-  }, []);
+export const useMsgFromCode = (cmd:string = null):FigmaMessageData => {
+  const lastMsg = useCodeMessageStore(state => state.lastMessage);
+  const [ thisMsg, setMsg ] = useState<FigmaMessageData>(null);
 
-  return lastMsg;
+  useEffect(() => {
+    if (!cmd || cmd === lastMsg?.command) {
+      setMsg(lastMsg);
+    }
+  }, [lastMsg]);
+  
+  return thisMsg;
 };
 
 /**

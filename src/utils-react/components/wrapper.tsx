@@ -1,18 +1,15 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useLayoutEffect } from "react";
+import { codeMessageObserver } from "../../utils/messages";
 import { useMsgFromCode } from "../hooks";
+import { useCodeMessageStore } from "../state";
 
+/**
+ * A functional component to be used by each React UI within this
+ * Figma plugin
+ */
 const Wrapper:FunctionComponent<{}> = ({ children }) => {
-  const errorMsg = useMsgFromCode(cmd => cmd === 'ui-error');
-
-  useEffect(() => {
-    console.log({ errorMsg });
-  }, [errorMsg]);
-  
   return (
     <div id="wrapper">
-      { !!errorMsg && (
-        <span>{ errorMsg.data || `Sorry, something went wrong!` }</span>
-      ) }
       { children }
     </div>
   )
