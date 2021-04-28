@@ -23,6 +23,7 @@ const saveSettings = async (settings:StoredSettings):Promise<void> => {
 const processMsg = async (msg:FigmaMessageData) => {
   const data = msg?.data || null;
 
+  console.info(`Got UI message "${msg.command}"`, msg);
   switch(msg?.command) {
     case 'settings-getSettings':
       sendMsgToUI({
@@ -46,9 +47,4 @@ export default async () => {
 
   // Triggering our UI layer to initialize our settings
   sendMsgToUI({ command: 'init-ui-settings' });
-
-  setTimeout(function() {
-    console.log('hi');
-    sendMsgToUI({ command: 'ui-error', data: 'some error!' });
-  }, 2000);
 }

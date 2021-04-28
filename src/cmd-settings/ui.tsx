@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app';
+import Wrapper from '../utils-react/components/wrapper';
+import SettingsApp from './app';
 
 export default () => {
   ReactDOM.render(
-    <App />,
+    <Wrapper>
+      <SettingsApp />
+    </Wrapper>,
     document.getElementById('root'),
-  )
+  );
 }
