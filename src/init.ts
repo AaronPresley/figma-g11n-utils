@@ -27,7 +27,6 @@ const configureSettings = async () => {
   
     // Only set the inital value if there isn't one already
     if (currVal === undefined) {
-      console.log(`Setting init value of ${path} to ${initialValue}`);
       calls.push(setValue(path, initialValue));
     }
   });

@@ -14,7 +14,6 @@ const App = () => {
   }, []);
 
   const onSettingsChanged = (path:string, value:string | boolean) => {
-    console.log({ path, value });
     sendMsgToCode({
       command: 'settings-setValue',
       data: { path, value },

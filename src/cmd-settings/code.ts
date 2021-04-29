@@ -31,7 +31,6 @@ const processMsg = async (msg:FigmaMessageData) => {
 
     case 'settings-setValue':
       const { path, value } = msg.data;
-      console.info(`Saving info`, { path, value });
       await setValue(path, value);
       break;
 
