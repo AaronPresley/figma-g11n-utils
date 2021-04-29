@@ -3,22 +3,36 @@ import { getValue, setValue } from '../utils/storage';
 
 export interface StoredSettings {
   pseudoTranslate: {
+    prependChars: string;
+    appendChars: string;
     doExpand: boolean;
   }
 }
 
-const getSettings = async ():Promise<StoredSettings> => ({
+export const getSettings = async ():Promise<StoredSettings> => ({
   pseudoTranslate: {
+    prependChars: await getValue('pseudoTranslate.prependChars') || '',
+    appendChars: await getValue('pseudoTranslate.appendChars') || '',
     doExpand: await getValue<boolean>('pseudoTranslate.doExpand') || false,
   }
 });
 
-const saveSettings = async (settings:StoredSettings):Promise<void> => {
-  await setValue(
-    'pseudoTranslate.doExpand',
-    settings?.pseudoTranslate?.doExpand || false,
-  );
-};
+// export const saveSettings = async (settings:StoredSettings):Promise<void> => {
+//   await setValue(
+//     'pseudoTranslate.prependChars',
+//     settings?.pseudoTranslate?.prependChars || ''
+//   );
+
+//   await setValue(
+//     'pseudoTranslate.appendChars',
+//     settings?.pseudoTranslate?.appendChars || ''
+//   );
+
+//   await setValue(
+//     'pseudoTranslate.doExpand',
+//     settings?.pseudoTranslate?.doExpand || false
+//   );
+// };
 
 const processMsg = async (msg:FigmaMessageData) => {
   const data = msg?.data || null;
@@ -32,8 +46,10 @@ const processMsg = async (msg:FigmaMessageData) => {
       });
       break;
 
-    case 'settings-saveSettings':
-      saveSettings(msg?.data);
+    case 'settings-setValue':
+      const { path, value } = msg.data;
+      console.info(`Saving info`, { path, value });
+      await setValue(path, value);
       break;
 
     default:

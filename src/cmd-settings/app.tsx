@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import set from 'lodash/set'
 import { useMsgFromCode, useMsgToCode } from '../utils-react/hooks';
 import { StoredSettings } from './code';
@@ -12,14 +12,12 @@ const App = () => {
   useEffect(() => {
     sendMsgToCode({ command: 'settings-getSettings' });
   }, []);
-  
-  const onSettingsChanged = (path:string, value:any) => {
-    set(settingsMsg?.data, path, value);
+
+  const onSettingsChanged = (path:string, value:string | boolean) => {
     sendMsgToCode({
-      command: 'settings-saveSettings',
-      data: settingsMsg?.data,
+      command: 'settings-setValue',
+      data: { path, value },
     });
-    sendMsgToCode({ command: 'settings-getSettings' });
   }
 
   return (
@@ -28,32 +26,21 @@ const App = () => {
       <TextInputField
         label="Prepend Characters"
         helpText="When provided, the characters here will be prepended to the translated text layer."
-        value=""
-        onChange={() => {}}
-      />
+        defaultValue={settingsMsg?.data?.pseudoTranslate?.prependChars || ''}
+        onChange={({ target: { value }}) => onSettingsChanged('pseudoTranslate.prependChars', value)}
+        />
       <TextInputField
         label="Append Characters"
         helpText="When provided, the characters here will be appended to the translated text layer."
-        value=""
-        onChange={() => {}}
-      />
+        defaultValue={settingsMsg?.data?.pseudoTranslate?.appendChars || ''}
+        onChange={({ target: { value }}) => onSettingsChanged('pseudoTranslate.appendChars', value)}
+        />
       <CheckboxField
         label="Expand Text"
         helpText="When enabled, this will expand the length of the given text layer based on its length."
-        checked
-        onChange={() => {}}
+        defaultChecked={settingsMsg?.data?.pseudoTranslate?.doExpand}
+        onClick={({ currentTarget: { checked }}) => onSettingsChanged('pseudoTranslate.doExpand', checked)}
       />
-      {/* <label>
-        <input
-          type="checkbox"
-          disabled={!settingsMsg}
-          checked={settingsMsg?.data?.pseudoTranslate?.doExpand}
-          onChange={({ target: { checked }}) => {
-            onSettingsChanged(`pseudoTranslate.doExpand`, checked);
-          }}
-        />
-        Do Expand
-      </label> */}
     </>
   );
 }

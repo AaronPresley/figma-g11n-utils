@@ -1,16 +1,14 @@
-import React, { ChangeEvent, ChangeEventHandler, FunctionComponent } from 'react';
+import React, { FunctionComponent, InputHTMLAttributes } from 'react';
 
-export interface Props {
+export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   helpText?: string | JSX.Element;
   label: string | JSX.Element;
-  onChange: (e:ChangeEvent<HTMLInputElement>) => void;
-  checked: boolean;
 }
 
-const CheckboxField:FunctionComponent<Props> = ({ label, checked, onChange, helpText }) => {
+const CheckboxField:FunctionComponent<Props> = ({ label, helpText, ...others }) => {
   return (
     <label className="input-group has-checkbox">
-      <input type="checkbox" checked={checked} onChange={onChange} />
+      <input type="checkbox" {...others} />
       { label }
       <div className="help-text">{ helpText }</div>
     </label>

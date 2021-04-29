@@ -1,17 +1,15 @@
-import React, { ChangeEvent, ChangeEventHandler, FunctionComponent } from 'react';
+import React, { ChangeEvent, FunctionComponent, InputHTMLAttributes } from 'react';
 
-export interface Props {
+export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   helpText?: string | JSX.Element;
   label: string | JSX.Element;
-  onChange: (e:ChangeEvent<HTMLInputElement>) => void;
-  value: string | number;
 }
 
-const TextInputField:FunctionComponent<Props> = ({ label, value, onChange, helpText }) => {
+const TextInputField:FunctionComponent<Props> = ({ label, helpText, ...others }) => {
   return (
     <div className="input-group">
       <label>{ label }</label>
-      <input type="text" value={value} onChange={onChange} />
+      <input type="text" {...others} />
       <div className="help-text">{ helpText }</div>
     </div>
   )
