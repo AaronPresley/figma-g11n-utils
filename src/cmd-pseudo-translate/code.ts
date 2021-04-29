@@ -1,10 +1,19 @@
-import { PseudoFormat } from 'i18n-pseudo';
+import { PseudoFormat, PseudoFormatOptions } from 'i18n-pseudo';
 import { gatherTextNodes } from '../utils/gather-text-nodes';
+import { getValue } from '../utils/storage';
 
 export default async () => {
+  // Doing this here to address an annoying race
+  // condition I can't figure out at the moment
+  // https://github.com/AaronPresley/figma-g11n-utils/issues/2
+  const doExpand = await getValue<boolean>('pseudoTranslate.doExpand');
+  
   const pseudo = new PseudoFormat({
-    appendChars: '', prependChars: '',
+    doExpand: doExpand === undefined ? true : doExpand,
+    prependChars: await getValue('pseudoTranslate.prependChars'),
+    appendChars: await getValue('pseudoTranslate.appendChars'),
   });
+  
   const textNodes = gatherTextNodes(figma.currentPage.selection);
   
   if (!textNodes.length) {

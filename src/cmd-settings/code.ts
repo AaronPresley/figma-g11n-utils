@@ -17,23 +17,6 @@ export const getSettings = async ():Promise<StoredSettings> => ({
   }
 });
 
-// export const saveSettings = async (settings:StoredSettings):Promise<void> => {
-//   await setValue(
-//     'pseudoTranslate.prependChars',
-//     settings?.pseudoTranslate?.prependChars || ''
-//   );
-
-//   await setValue(
-//     'pseudoTranslate.appendChars',
-//     settings?.pseudoTranslate?.appendChars || ''
-//   );
-
-//   await setValue(
-//     'pseudoTranslate.doExpand',
-//     settings?.pseudoTranslate?.doExpand || false
-//   );
-// };
-
 const processMsg = async (msg:FigmaMessageData) => {
   const data = msg?.data || null;
 
