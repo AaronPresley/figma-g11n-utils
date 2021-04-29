@@ -24,7 +24,7 @@ const App = () => {
 
   return (
     <>
-      <h1>Pseudo Translation Settings</h1>
+      <h1>Pseudo Translate Settings</h1>
       <TextInputField
         label="Prepend Characters"
         helpText="When provided, the characters here will be prepended to the translated text layer."
