@@ -3,7 +3,9 @@
   "id": "937106647604992352",
   "api": "1.0.0",
   "main": "build/code.js",
+  "ui": "build/ui.html",
   "menu": [
-    {"name":"Pseudo Translate", "command": "pseudo-translate"}
+    {"name":"Pseudo Translate", "command": "pseudo-translate"},
+    {"name":"Settings", "command": "settings"}
   ]
 }

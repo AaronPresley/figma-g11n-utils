@@ -3,6 +3,7 @@
     "target": "ES2016",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "jsx": "react",
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/@figma"
